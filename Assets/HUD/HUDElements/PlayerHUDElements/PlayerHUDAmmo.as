@@ -1,6 +1,8 @@
 ﻿package Assets.HUD.HUDElements.PlayerHUDElements {
 	
 	import Assets.HUD.HUDElements.HUDElement;
+	import Assets.Units.AlliedUnits.InfiKnight;
+	import Assets.Weapons.Weapon;
 	import Events.WeaponEvent;
 	import flash.display.MovieClip;
 	import flash.text.TextField;
@@ -31,26 +33,35 @@
 			defaultAmmoBarWidth = ammoBar.width;
 		}
 		
-		private function updateWeaponAmmo(W:WeaponEvent):void {		
-			var currentAmmo:uint = W.weapon.getCurrentAmmo();
-			var maximumAmmo:uint = W.weapon.getMaximumAmmo();
-			
-			if (maximumAmmo > 0) {	
-				this.visible = true;
-				if (W.type == WeaponEvent.WEAPON_CHANGE) {
-					changeSeparators(maximumAmmo);
-				}		
-			
-				currentAmmoText.text = currentAmmo.toString();
-				maximumAmmoText.text = maximumAmmo.toString();
+		public function updateWeaponAmmo(w:WeaponEvent):void {	
+			if (w) {
+				var currentAmmo:uint = w.weapon.getCurrentAmmo();
+				var maximumAmmo:uint = w.weapon.getMaximumAmmo();
 				
-				ammoBar.width = (currentAmmo / maximumAmmo) * defaultAmmoBarWidth;
-			} else {
-				this.visible = false;
-				currentAmmoText.text = "-";//"∞";
-				maximumAmmoText.text = "-";//"∞";
+				if (maximumAmmo > 0) {	
+					this.visible = true;
+					if (w.type == WeaponEvent.WEAPON_CHANGE) {
+						changeSeparators(maximumAmmo);
+					}		
 				
-				ammoBar.width = 0;
+					currentAmmoText.text = currentAmmo.toString();
+					maximumAmmoText.text = maximumAmmo.toString();
+					
+					ammoBar.width = (currentAmmo / maximumAmmo) * defaultAmmoBarWidth;
+				} else {
+					this.visible = false;
+					currentAmmoText.text = "-";//"∞";
+					maximumAmmoText.text = "-";//"∞";
+					
+					ammoBar.width = 0;
+				}
+			}
+		}
+	
+		public function checkForWeapon(knight:InfiKnight):void {
+			var weapon:Weapon = knight.getEquippedWeapon();
+			if (weapon) {
+				updateWeaponAmmo(new WeaponEvent(WeaponEvent.WEAPON_ACQUIRE, weapon));
 			}
 		}
 	

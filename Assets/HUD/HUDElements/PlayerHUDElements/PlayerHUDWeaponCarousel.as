@@ -2,6 +2,7 @@
 	
 	import Assets.HUD.HUDElements.HUDElement;
 	import Assets.Icons.WeaponIcons.WeaponIcon;
+	import Assets.Units.AlliedUnits.InfiKnight;
 	import Assets.Units.Unit;
 	import Events.WeaponEvent;
 	import Factories.IconFactory;
@@ -9,13 +10,13 @@
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import Global.Game;
+	import Assets.Weapons.Weapon;
 	
 	public class PlayerHUDWeaponCarousel extends HUDElement {
 		
 		private const SCROLL_TICKS:uint = 10;
 		private const SCROLL_DISTANCE:uint = 500;
 		
-		private var attachedUnit:Unit;
 		private var container:MovieClip;
 		private var weaponIconList:Array;
 		private var selectedWeaponIconIndex:int;
@@ -25,7 +26,6 @@
 
 		public function PlayerHUDWeaponCarousel(unit:Unit) {
 			this.scaleX = this.scaleY = 0.15;
-			this.attachedUnit = unit;
 			
 			weaponIconList = new Array();
 			selectedWeaponIconIndex = 0;
@@ -60,7 +60,7 @@
 	
 		public function cycleThroughCarousel(w:WeaponEvent) {
 			if (w) {
-				if (w.value != 0) {
+				if (w.value != 0 && weaponIconList.length > 1) {
 					scrollDirection = w.value;
 					previouslySelectedWeaponIconIndex = selectedWeaponIconIndex;
 					selectedWeaponIconIndex += scrollDirection;
@@ -107,6 +107,15 @@
 	
 		public function finishScrolling(t:TimerEvent):void {
 			container.removeChild(weaponIconList[previouslySelectedWeaponIconIndex]);
+		}
+	
+		public function checkForWeapons(knight:InfiKnight):void {
+			var weapons:Array = knight.getWeaponsList();
+			if (weapons) {
+				for each (var weapon:Weapon in weapons) {
+					addWeaponToCarousel(new WeaponEvent(WeaponEvent.WEAPON_ACQUIRE, weapon));
+				}
+			}
 		}
 
 	}

@@ -13,8 +13,8 @@
 	
 	public class InfiKnight extends Unit {
 		
-		public var equippedWeaponIndex:int;
-		public var weaponsList:Array;
+		private var equippedWeaponIndex:int;
+		private var weaponsList:Array;
 		
 		public function InfiKnight() {
 			super(Teams.ALLY);
@@ -64,6 +64,10 @@
 	
 		public function getEquippedWeapon():Weapon {
 			return weaponsList[equippedWeaponIndex];
+		}
+	
+		public function getWeaponsList():Array {
+			return weaponsList;
 		}
 	
 		public function cycleThroughWeapons(direction:int):void {

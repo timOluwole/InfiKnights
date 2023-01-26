@@ -3,6 +3,7 @@
 	import Assets.Containers.DepthLayer;
 	import flash.events.EventDispatcher;
 	import flash.display.Stage;
+	import flash.display.StageScaleMode;
 	import flash.geom.Point;
 	
 	public class Game {
@@ -19,6 +20,7 @@
 		
 		public static function SetUpStage(stage:Stage, context:InfiNight) {
 			STAGE = stage;
+			STAGE.scaleMode = StageScaleMode.NO_BORDER;
 			MID_STAGE = new Point(STAGE.stageWidth / 2, STAGE.stageHeight / 2);
 			CONTEXT = context;
 			

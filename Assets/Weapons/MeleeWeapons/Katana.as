@@ -16,7 +16,7 @@
 			this.firingPointX = 0;
 			this.firingPointY = 0;
 			this.damage = 50;
-			this.damageValues = new Array(30, 20, 40);
+			this.damageValues = new Array(30, 20, 30);
 		}
 
 		public override function attack():void {
