@@ -1,8 +1,8 @@
 ﻿package Assets.Containers {
 	
-	import flash.display.MovieClip;
+	import Assets.Asset;
 	
-	public class DepthLayer extends MovieClip {
+	public class DepthLayer extends Asset {
 
 		public function DepthLayer() {
 			

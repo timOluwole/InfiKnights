@@ -11,6 +11,7 @@
 	import Global.Game;
 	import Utilities.UtilFrame;
 	import Utilities.UtilMaths;
+	import flash.geom.Point;
 	
 	public class Weapon extends Asset {
 
@@ -21,6 +22,7 @@
 		protected var currentAmmo:uint;
 		protected var maximumAmmo:uint;
 		protected var damage:uint;
+		protected var damageType:String;
 		private var weaponName:String;
 		
 		protected var firingPointX:Number = 0;
@@ -84,8 +86,9 @@
 					if (hitBox) {
 						hitBox.addUnitToHitTargets(w.unitHit);
 					}
-					var damageDealt:uint = UtilMaths.scatter10Percent(damage);
-					w.unitHit.dispatchEvent(new UnitEvent(UnitEvent.UNIT_TAKE_DAMAGE, w.unitHit, -damageDealt));
+					var healthCnange:uint = -UtilMaths.scatter10Percent(damage);
+					w.unitHit.dispatchEvent(new UnitEvent(UnitEvent.UNIT_GET_HIT, w.unitHit, healthCnange, this, this.damageType));
+					w.unitHit.dispatchEvent(new UnitEvent(UnitEvent.UNIT_TAKE_DAMAGE, w.unitHit, healthCnange));
 					this.dispatchEvent(new WeaponEvent(WeaponEvent.WEAPON_HIT_COMPLETE, this));
 				}
 			}
@@ -111,7 +114,7 @@
 			return hitBox;
 		}
 	
-		public function hasAlreadyHitEnemy(unit:Unit):Boolean {
+		public function hasAlreadyHitUnit(unit:Unit):Boolean {
 			var hitBox:HitBox = getHitBox()
 			return (hitBox && hitBox.hasAlreadyHitUnit(unit));
 		}

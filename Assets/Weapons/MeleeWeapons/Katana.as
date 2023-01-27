@@ -3,6 +3,7 @@
 	import Assets.Weapons.Weapon;
 	import Events.WeaponEvent;
 	import flash.geom.Point;
+	import Global.DamageTypes;
 	import Utilities.UtilFrame;
 	
 	public class Katana extends Weapon {
@@ -16,6 +17,7 @@
 			this.firingPointX = 0;
 			this.firingPointY = 0;
 			this.damage = 50;
+			this.damageType = DamageTypes.PHYSICAL;
 			this.damageValues = new Array(30, 20, 30);
 		}
 

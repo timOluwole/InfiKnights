@@ -12,12 +12,6 @@
 		}
 	
 		private function projectileHitComplete(p:ProjectileEvent):void {
-			var splatter:uint = 10 + (Math.random() * 5);
-			
-			for (var i:uint = 0; i < splatter; i++) {
-				Game.UNIT_LAYER.addChild(new BugHitParticle(this.x, this.y));
-			}
-			
 			this.deleteThis();
 		}
 

@@ -8,6 +8,7 @@
 		public static const DESPAWN = "despawn";
 		public static const STANDING = "standing";
 		public static const WALKING = "walking";
+		public static const STANDBY = "standby";
 		
 	}
 	

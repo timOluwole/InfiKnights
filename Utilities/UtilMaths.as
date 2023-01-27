@@ -1,5 +1,6 @@
 ﻿package Utilities {
 	
+	import Assets.Asset;
 	import Assets.Units.Unit;
 	import flash.display.DisplayObject;
 	import flash.geom.Point;
@@ -60,13 +61,13 @@
 			return directionRotation;
 		}
 	
-		public static function getTransformedPoint(obj:DisplayObject, displacementX:Number, displacementY:Number):Point {
+		public static function getTransformedPoint(obj:Asset, displacementX:Number = 0, displacementY:Number = 0):Point {
 			var lastParent:DisplayObject = obj.parent;
-			var newX:Number = displacementX * obj.scaleX;
-			var newY:Number = displacementY * obj.scaleY;
+			var newX:Number = obj.x + (displacementX * obj.scaleX);
+			var newY:Number = obj.y + (displacementY * obj.scaleY);
 			var newPoint:Point = new Point(newX, newY);
 			
-			do {
+			while (lastParent != Game.UNIT_LAYER && lastParent != Game.STAGE) {
 				newPoint = rotate(newPoint, lastParent.rotation);
 				newPoint.x *= lastParent.scaleX;
 				newPoint.y *= lastParent.scaleY;
@@ -74,7 +75,7 @@
 				newPoint.y += lastParent.y;
 
 				lastParent = lastParent.parent;
-			} while (lastParent == Game.STAGE);
+			}
 		
 			return newPoint;
 		}

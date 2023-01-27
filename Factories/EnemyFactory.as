@@ -22,14 +22,12 @@
 			spawnTimer.start();			
 		}
 	
-		private function spawnEnemy(T:TimerEvent):void {
-			if (T) {				
-				var beetle:Beetle = new Beetle();
-				beetle.x = Math.round(Math.random() * Game.STAGE.stageWidth);
-				beetle.y = Math.round(Math.random() * Game.STAGE.stageHeight);
-				var enemyHUD:EnemyHUD = new EnemyHUD(beetle);
-				beetle.initialiseHealth(100);
-			}
+		private function spawnEnemy(t:TimerEvent):void {			
+			var beetle:Beetle = new Beetle();
+			beetle.x = Math.round(Math.random() * Game.STAGE.stageWidth);
+			beetle.y = Math.round(Math.random() * Game.STAGE.stageHeight);
+			var enemyHUD:EnemyHUD = new EnemyHUD(beetle);
+			beetle.initialiseHealth(100);
 		}
 	
 		private function updateScore(G:GameEvent):void {

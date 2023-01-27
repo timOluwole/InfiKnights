@@ -6,6 +6,7 @@
 	import Controllers.HumanController;
 	import Events.GameEvent;
 	import Events.UnitEvent;
+	import Factories.DropFactory;
 	import Factories.EnemyFactory;
 	import Global.Game;
 	import Global.Teams;
@@ -17,12 +18,15 @@
 		private var allies:Array;
 		
 		private var enemyFactory:EnemyFactory;
+		private var dropFactory:DropFactory;
 
 		public function GameRun() {
 			this.score = 0;			
 			this.knight = new InfiKnight();
 			this.allies = new Array();
+			
 			this.enemyFactory = new EnemyFactory();
+			this.dropFactory = new DropFactory();
 			
 			setUpController();
 			

@@ -18,7 +18,6 @@
 		private function particleFall(e:Event):void {
 			this.x += movementX;
 			this.y += movementY;
-			this.alpha = Math.max(this.alpha - 0.05, 0);
 			
 			if (this.alpha <= 0) {
 				this.deleteThis();

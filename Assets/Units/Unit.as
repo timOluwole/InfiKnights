@@ -1,6 +1,7 @@
 ﻿package Assets.Units {
 	
 	import Assets.Asset;
+	import Assets.Containers.HurtBox;
 	import Data.AttackData.AttackData;
 	import Data.AttackData.Attacks;
 	import Data.Stats.*;
@@ -11,6 +12,8 @@
 	import Global.Frames;
 	import Global.Game;
 	import Utilities.UtilFrame;
+	import Utilities.UtilObject;
+	import Assets.Containers.HitBox;
 
 	
 	public class Unit extends Asset {
@@ -22,7 +25,6 @@
 		
 		private var team:String;
 		private var health:BasicStat;
-		private var hurtBox:MovieClip;
 		
 		public function Unit(team:String) {
 			this.team = team;
@@ -57,14 +59,6 @@
 	
 		public function getTeam():String {
 			return team;
-		}
-	
-		public function getHitBox():MovieClip {
-			return this["HitBox"];
-		}
-	
-		public function getHurtBox():MovieClip {
-			return this["HurtBox"];
 		}
 	
 		// setters
@@ -134,14 +128,10 @@
 	
 		private function checkProjectileHit(p:ProjectileEvent):void {
 			if (p) {
-				if (p.projectile) {	// ensuring bullet has not disappeared
-					var hurtBox:MovieClip = getHurtBox();
-					
-					if (this.isAlive() && hurtBox) {
-						if (hurtBox.hitTestObject(p.projectile.getHitBox())) {
-							if (p.projectile.getSourceTeam() != this.getTeam()) {
-								p.projectile.dispatchEvent(new ProjectileEvent(ProjectileEvent.PROJECTILE_HIT, p.projectile, this));
-							}
+				if (p.projectile && this.isAlive()) {
+					if (UtilObject.attackMakesContact(p.projectile, this)) {
+						if (p.projectile.getSourceTeam() != this.getTeam()) {
+							p.projectile.dispatchEvent(new ProjectileEvent(ProjectileEvent.PROJECTILE_HIT, p.projectile, this));
 						}
 					}
 				}
@@ -150,17 +140,12 @@
 	
 		private function checkAttackHit(u:UnitEvent):void {
 			if (u) {
-				if (u.unit) {	// ensuring attacking unit has not disappeared
-					var hitBox:MovieClip = u.unit.getHitBox();
-					var hurtBox:MovieClip = this.getHurtBox();
-					
-					if (this.isAlive() && hitBox && hurtBox) {
-						if (hurtBox.hitTestObject(hitBox)) {
-							if (u.unit.getTeam() != this.getTeam()) {
-								var attackName = UtilFrame.getAttackName(u.unit.currentLabel);
-								var attack:AttackData = u.unit.getAttacks().getAttack(attackName);
-								u.unit.dispatchEvent(new AttackEvent(AttackEvent.ATTACK_HIT, this, attack));
-							}
+				if (u.unit && this.isAlive()) {
+					if (UtilObject.attackMakesContact(u.unit, this)) {
+						if (u.unit.getTeam() != this.getTeam()) {
+							var attackName = UtilFrame.getAttackName(u.unit.currentLabel);
+							var attack:AttackData = u.unit.getAttacks().getAttack(attackName);
+							u.unit.dispatchEvent(new AttackEvent(AttackEvent.ATTACK_HIT, this, attack));
 						}
 					}
 				}
@@ -169,14 +154,10 @@
 	
 		private function checkWeaponHit(w:WeaponEvent):void {
 			if (w) {
-				if (w.weapon) {	// ensuring bullet has not disappeared
-					var hurtBox:MovieClip = getHurtBox();
-					
-					if (this.isAlive() && hurtBox) {
-						if (hurtBox.hitTestObject(w.weapon.getHitBox())) {
-							if (w.weapon.getWielderTeam() != this.getTeam() && !w.weapon.hasAlreadyHitEnemy(this)) {
-								w.weapon.dispatchEvent(new WeaponEvent(WeaponEvent.WEAPON_HIT, w.weapon, this));
-							}
+				if (w.weapon && this.isAlive()) {
+					if (UtilObject.attackMakesContact(w.weapon, this)) {
+						if (w.weapon.getWielderTeam() != this.getTeam() && !w.weapon.hasAlreadyHitUnit(this)) {
+							w.weapon.dispatchEvent(new WeaponEvent(WeaponEvent.WEAPON_HIT, w.weapon, this));
 						}
 					}
 				}
@@ -208,7 +189,7 @@
 	
 		private function checkForAttack():void {
 			if (UtilFrame.isAttackFrame(this.currentLabel)) {
-				var hitBox:MovieClip = this.getHitBox();
+				var hitBox:MovieClip = UtilObject.getHitBox(this);
 				
 				if (hitBox) {
 					this.dispatchEvent(new UnitEvent(UnitEvent.UNIT_ATTACK_HIT_CHECK, this));

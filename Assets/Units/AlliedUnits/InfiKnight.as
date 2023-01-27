@@ -4,7 +4,9 @@
 	import Assets.Weapons.Weapon;
 	import Data.Stats.*;
 	import Events.EnemyEvent;
+	import Events.KnightEvent;
 	import Events.WeaponEvent;
+	import flash.events.Event;
 	import flash.geom.Point;
 	import Global.Directions;
 	import Global.Game;
@@ -31,6 +33,12 @@
 			if (!Game.STAGE.hasEventListener(EnemyEvent.ENEMY_LOCATE_KNIGHT)) {
 				Game.STAGE.addEventListener(EnemyEvent.ENEMY_LOCATE_KNIGHT, findKnight);
 			}
+		
+			this.addListener(Event.ENTER_FRAME, knightFrames);
+		}
+	
+		public function knightFrames(e:Event):void {
+			this.dispatchEvent(new KnightEvent(KnightEvent.KNIGHT_MOVEMENT, this));
 		}
 	
 		public function stand(facingAngle:Number):void {

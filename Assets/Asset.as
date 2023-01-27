@@ -1,6 +1,8 @@
 ﻿package Assets {
 	import flash.utils.Dictionary;
 	import flash.display.MovieClip;
+	import Utilities.UtilObject;
+	import Assets.Drops.BuffDrops.HealDrop;
 	
 	public class Asset extends MovieClip {
 
